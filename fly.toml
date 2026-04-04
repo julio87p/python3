@@ -1,9 +1,9 @@
-# fly.toml app configuration file generated for python3-fxhgza on 2026-04-04T22:25:45Z
+# fly.toml app configuration file generated for python3-xdni2q on 2026-04-04T22:31:54Z
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
-app = 'python3-fxhgza'
+app = 'python3-xdni2q'
 primary_region = 'ams'
 
 [build]
@@ -20,4 +20,4 @@ primary_region = 'ams'
   memory = '1gb'
   cpu_kind = 'shared'
   cpus = 1
-  memory_mb = 32768
+  memory_mb = 4096
