@@ -3,14 +3,14 @@ name: RDP + Tailscale + RustDesk + (Optional) Chrome Remote Desktop (A)
 on:
   workflow_dispatch:
     inputs:
-      ts_tailnet:         { description: "Tailscale tailnet (e.g. you@gmail.com)", required: true }
-      ts_api_key:         { description: "Tailscale API key (device admin, no Bearer)", required: true }
-      ts_authkey:         { description: "Tailscale Auth key (reusable or ephemeral)", required: true }
-      quick_test:         { description: "Run 5-minute test", type: boolean, default: false }
-      runtime_minutes:    { description: "Runtime (max 360; default 355 when not test)", required: false, default: "355" }
-      do_purge:           { description: "Purge bullet* devices at start (single instance only)", required: false, default: "true" }
-      cycles:             { description: "0=stop after A; N=handoffs left incl this run", required: false, default: "0" }
-      rdp_count:          { description: "How many RDP instances (1-10) [ignored if CRD provided]", required: false, default: "1" }
+      ts_tailnet: {description: "Tailscale tailnet (e.g. you@gmail.com)", required: true}
+      ts_api_key: {description: "Tailscale API key (device admin, no Bearer)", required: true}
+      ts_authkey: {description: "Tailscale Auth key (reusable or ephemeral)", required: true}
+      quick_test: {description: "Run 5-minute test", type: boolean, default: false}
+      runtime_minutes: {description: "Runtime (max 360; default 355 when not test)", required: false, default: "355"}
+      do_purge: {description: "Purge bullet* devices at start (single instance only)", required: false, default: "true"}
+      cycles: {description: "0=stop after A; N=handoffs left incl this run", required: false, default: "0"}
+      rdp_count: {description: "How many RDP instances (1-10) [ignored if CRD provided]", required: false, default: "1"}
       crd_code:
         description: >-
           Paste raw CRD code (4/0AV...), full PowerShell command, or text/URL containing --code="4/...".
@@ -32,10 +32,10 @@ defaults:
 
 jobs:
   setup:
-    runs-on: ubuntu-latest
+    runs-on: tenki-standard-large-plus-16c-32g
     outputs:
       matrix: ${{ steps.mk.outputs.matrix }}
-      multi:  ${{ steps.mk.outputs.multi }}   # expose single vs multi
+      multi: ${{ steps.mk.outputs.multi }} # expose single vs multi
     steps:
       - id: mk
         run: |
@@ -78,7 +78,7 @@ jobs:
           if ($crd.Length -gt 0) { "CRD_ENABLED=1" | Out-File -Append $env:GITHUB_ENV } else { "CRD_ENABLED=0" | Out-File -Append $env:GITHUB_ENV }
           Write-Host "CRD_ENABLED=$([int]($crd.Length -gt 0))"
 
-      - name: Install Chrome Remote Desktop Host (if missing)  # EXE -> MSI fallback
+      - name: Install Chrome Remote Desktop Host (if missing) # EXE -> MSI fallback
         if: env.CRD_ENABLED == '1'
         run: |
           $exe = "${Env:PROGRAMFILES(X86)}\Google\Chrome Remote Desktop\CurrentVersion\remoting_start_host.exe"
