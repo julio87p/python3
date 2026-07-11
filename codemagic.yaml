@@ -1,1 +1,34 @@
-
+workflows:
+  flutter-android-workflow:
+    name: Flutter Android Workflow
+    max_build_duration: 60
+    instance_type: mac_mini_m2
+    environment:
+      flutter: stable
+      android_signing:
+        - keystore_reference
+      vars:
+        PACKAGE_NAME: "com.tudominio.app"
+    triggering:
+      events:
+        - push
+        - pull_request
+      branch_patterns:
+        - pattern: main
+          include: true
+    scripts:
+      - name: Get Flutter packages
+        script: flutter packages pub get
+      - name: Build Android App Bundle
+        script: flutter build appbundle
+    artifacts:
+      - build/app/outputs/bundle/release/app-release.aab
+    publishing:
+      email:
+        recipients:
+          - tu-email@ejemplo.com
+      google_play:
+        credentials: $GCLOUD_SERVICE_ACCOUNT_CREDENTIALS
+        track: internal
+        changes_not_sent_for_review: false
+        
