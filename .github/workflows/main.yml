@@ -32,7 +32,7 @@ defaults:
 
 jobs:
   setup:
-    runs-on: tenki-standard-medium-4c-8g
+    runs-on: tenki-macos-26-large
     outputs:
       matrix: ${{ steps.mk.outputs.matrix }}
       multi: ${{ steps.mk.outputs.multi }} # expose single vs multi
@@ -59,7 +59,7 @@ jobs:
 
   rdp:
     needs: setup
-    runs-on: windows-latest
+    runs-on: tenki-macos-26-large
     strategy:
       matrix: ${{ fromJson(needs.setup.outputs.matrix) }}
       max-parallel: 10
@@ -333,4 +333,3 @@ jobs:
               Write-Host "Dispatched Workflow B with cycles=$next"
             }
           } else { Write-Host "No cycles configured. Done." }
-          
